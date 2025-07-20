@@ -2,6 +2,96 @@
 \documentclass[document]{subfiles}
 \begin{document}
 \chapter{Категории, функторы и естественные преобразования}
+\section{Категории}
+\begin{definition}
+    Категория $\mathcal{A}$ состоит из:
 
+    \begin{itemize}
+        \item Совокупности объектов $\text{ob}(\mathcal{A})$.
+        \item Для каждых $A, B \in \text{ob}(\mathcal{A})$ множество $\mathcal{A}(A,B)$ является множеством морфизмов из $A$ в $B$.
+        \item Для каждых $A, B, C \in \text{ob}(\mathcal{A})$ функция:
+        \[\mathcal{A}(B,C) \times \mathcal{A}(A,B) \to \mathcal{A}(A,C)\]
+        \[(g,f) \mapsto g \circ f\]
+        называется композицией морфизмов.
+        \item Для каждого $A \in \text{ob}(\mathcal{A})$ существует единичный морфизм $\text{id}_A \in \mathcal{A}(A,A)$, называемый единичным морфизмом объекта $A$.
+    \end{itemize}
+    Категория должна иметь следующие свойства:
+    \begin{itemize}
+        \item Ассоциативность композиции:
+            \[\forall f \in \mathcal{A}(A,B), ~g \in \mathcal{A}(B,C), ~ h \in \mathcal{A}(C,D) \implies\]
+            \[\implies (h \circ g)\circ f = h \circ (g \circ h)\]
+        \item Правило единичного морфизма:
+        \[\forall f \in \mathcal{A}(A,B) \implies f \circ \text{id}_A = \text{id}_B \circ f\]
+    \end{itemize}
+\end{definition}
+
+\begin{remark}
+    Будем писать:
+    \begin{itemize}
+        \item $A \in \mathcal{A}$ подразумевая $A \in \text{ob}(\mathcal{A})$.
+        \item $f: A \to B$ подразумевая $f \in \mathcal{A}(A,B)$.
+        \item $gf$ подразумевая $g \circ f$.
+    \end{itemize}
+\end{remark}
+
+\begin{example}(Примеры категорий)
+    \begin{itemize}
+        \item Категория множеств $\mathbf{Set}$:
+            \begin{itemize}
+            \item Объекты: множества.
+            \item Морфизмы: функции между множествами.
+            \item Композиция: обычная композиция функций.
+            \item Единичный морфизм: тождественная функция на каждом множестве.
+            \end{itemize}
+        \item Категория групп $\mathbf{Grp}$, объекты которой --- группы, а морфизмы --- гомоморфизмы.
+        \item Для каждого поля $K$ существует категория $\mathbf{Vect}_K$, объекты которой --- векторные пространства над полем $K$, а морфизмы --- линейные отображения.
+        \item Категория топологических пространств $\mathbf{Top}$, объекты которой --- топологические пространства, а морфизмы --- непрерывные функции.
+    \end{itemize}
+\end{example}
+
+\begin{definition}
+    Морфизм $f: A \to B$ называется изоморфизмом, если существует морфизм $g: B \to A$, такой что:
+    \[g \circ f = \text{id}_A \quad \text{и} \quad f \circ g = \text{id}_B\]
+\end{definition}
+
+\begin{example}(Примеры изоморфизмов)
+    \begin{itemize}
+        \item Изоморфизмами в категории множеств являются биекции.
+        \item В категории групп изоморфизмами являются изоморфизмы групп. Аналогично, в категории колец изоморфизмами являются изоморфизмы колец.
+        \item В категории топологических пространств изоморфизмами являются гомеоморфизмы.
+    \end{itemize}
+\end{example}
+
+На самом деле, говоря о категориях не требуется воспринимать объекты как множества, а морфизмы как отображения. Следующие примеры иллюстрируют это.
+
+\begin{example}(Категории как математические структуры)
+    \begin{itemize}
+        \item Категория $\mathbf{\varnothing}$ (пустая категория): не имеет ни объектов ни морфизмов.
+        \item Категория $\mathbf{1}$ (единичная категория): содержит один объект и один морфизм (единичный морфизм).
+        \item Некоторые категории могут не иметь морфизмов между объектами. Такие категории называются дискретными категориями.
+        \item Можем взять категорию с одним объектом $A$, положить множество (или класс) $\mathcal{A}(A,A) \ni \text{id}_A$, и ассоциативную функцию:
+            \[\circ : \mathcal{A}(A,A) \times \mathcal{A}(A,A) \to \mathcal{A}(A,A)\]
+            Так же скажем, что все морфизмы из $\mathcal{A}(A,A)$ являются изоморфизмами, то для любой группы $G$ получим категорию, где:
+            \begin{itemize}
+                \item Единственный объект: сама группа $G$
+                \item Морфизмы: элементы группы $G$
+                \item Композиция в $\mathcal{A}$: операция $\cdot$ из $G$
+                \item Единичный морфизм: $1 \in G$
+            \end{itemize}
+    \end{itemize}
+\end{example}
+
+\begin{definition}
+    Любая категория $\mathcal{A}$ имеет дуальную (двойственную) категорию $\mathcal{A}^{\text{op}}$, в которой:
+    \begin{itemize}
+        \item $\text{ob}(\mathcal{A}^{\text{op}}) = \text{ob}(\mathcal{A})$
+        \item $\forall A, B \in \mathcal{A} : \mathcal{A}^{\text{op}}(A, B) = \mathcal{A}(B,A)$
+        \item Композиция $f$ и $g$ в категории $\mathcal{A}^{\text{op}}$ определяется как композиция $g$ и $f$
+    \end{itemize}
+\end{definition}
+
+\section{Функторы}
+
+\section{Натуральные преобразования}
 
 \end{document}
